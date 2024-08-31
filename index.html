@@ -23,7 +23,6 @@
     Telegram.WebApp.MainButton.setText('Choose Color').show().onClick(function () {
         const data = JSON.stringify({hex: colorPicker.color.hexString, rgb: colorPicker.color.rgb});
         Telegram.WebApp.sendData(data);
-        Telegram.WebApp.close();
     });
 </script>
 <body style="background-color: #ffffff">
