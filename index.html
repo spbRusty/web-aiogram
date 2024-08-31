@@ -28,9 +28,8 @@
     </style>
 </head>
 <body>
-    <h1>Telegram WebApp Interaction</h1>
+    <h1>Telegram WebApp Interaction 1</h1>
     <button id="sendButton">Send Data to Bot</button>
-    <div id="output">Waiting for data from bot...</div>
 
     <script>
         // Инициализация WebApp
@@ -42,20 +41,7 @@
             Telegram.WebApp.sendData(JSON.stringify(dataToSend)); // Отправляем данные боту
         }
 
-        // Добавление обработчика на кнопку
         document.getElementById("sendButton").addEventListener("click", sendDataToBot);
-
-        // Обработка данных, полученных от бота (например, через onEvent)
-        Telegram.WebApp.onEvent('dataReceived', (data) => {
-            // Выводим данные от бота в div с id="output"
-            document.getElementById('output').textContent = "Data received from bot: " + JSON.stringify(data);
-        });
-
-        // Пример прослушивания события для получения данных от бота (в реальных условиях, бот сам отправит данные)
-        // Событие должно быть отправлено боту и обратно WebApp через обработчики в боте
-        window.addEventListener('message', function(event) {
-            const dataFromBot = event.data;
-            document.getElementById('output').textContent = "Data received from bot: " + JSON.stringify(dataFromBot);
         });
     </script>
 </body>
