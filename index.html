@@ -1,63 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram WebApp Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+    <script>
+        function setThemeClass() {
+            document.documentElement.className = Telegram.WebApp.colorScheme;
+        }
+
+        Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+        setThemeClass();
+    </script>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #222222);
+            margin: 0;
+            padding: 0;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            margin: 15px 0;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--tg-theme-button-color, #50a8eb);
+            color: var(--tg-theme-button-text-color, #ffffff);
             cursor: pointer;
-        }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            width: 80%;
-            text-align: center;
         }
     </style>
 </head>
-<body>
-    <h1>Telegram WebApp Interaction</h1>
-    <button id="sendButton">Send Data to Bot</button>
-    <div id="output">Waiting for data from bot...</div>
+<body style="visibility: hidden;">
+<section>
+    <button onclick="sendMessage();">Send «Hello, World!»</button>
+    <button onclick="webviewExpand();">Expand Webview</button>
+    <pre><code id="webview_data"></code></pre>
+</section>
+<script>
+    Telegram.WebApp.ready();
 
-    <script>
-        // Инициализация WebApp
-        Telegram.WebApp.ready();
+    function sendMessage() {
+        Telegram.WebApp.sendData("Hello, World!");
+    }
 
-        // Функция для отправки данных боту
-        function sendDataToBot() {
-            const dataToSend = { message: "Hello from WebApp" }; // Данные для отправки боту
-            Telegram.WebApp.sendData(JSON.stringify(dataToSend)); // Отправляем данные боту
-        }
+    function webviewExpand() {
+        Telegram.WebApp.expand();
+    }
 
-        // Добавление обработчика на кнопку
-        document.getElementById("sendButton").addEventListener("click", sendDataToBot);
-
-        // Обработка данных, полученных от бота (например, через onEvent)
-        Telegram.WebApp.onEvent('dataReceived', (data) => {
-            // Выводим данные от бота в div с id="output"
-            document.getElementById('output').textContent = "Data received from bot: " + JSON.stringify(data);
-        });
-
-        // Пример прослушивания события для получения данных от бота (в реальных условиях, бот сам отправит данные)
-        // Событие должно быть отправлено боту и обратно WebApp через обработчики в боте
-        window.addEventListener('message', function(event) {
-            const dataFromBot = event.data;
-            document.getElementById('output').textContent = "Data received from bot: " + JSON.stringify(dataFromBot);
-        });
-    </script>
+    var initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
+    document.getElementById('webview_data').textContent = JSON.stringify(initDataUnsafe, null, 2);
+    document.body.style.visibility = '';
+</script>
 </body>
 </html>
